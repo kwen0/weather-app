@@ -1,13 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
 </head>
+
 <body>
-    
+    <div id="container">
+        <div id="searchbar">
+            <form>
+                <i class="fas fa-map-marker-alt fa-2x"></i>
+                <input type="text" id="location" placeholder="Search city">
+            </form>
+        </div>
+        <div id="card">
+            <div id="data">
+                <div id="cityname">New York</div>
+                <div id="currenttemp">35°</div>
+                <div id="icon"></div>
+                <div id="condition">Cloudy</div>
+                <div class="highandlow">
+                    <div id="high">H: 39°</div>
+                    <div id="low">L: 31°</div>
+                </div>
+            </div>
+            <div class="unit">
+                <button id="F">F</button>
+                <div>|</div>
+                <button id="C">C</button>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>
