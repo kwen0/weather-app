@@ -15,9 +15,13 @@ function storeData(currentCity, currentTemp, icon, condition, high, low) {
 }
 
 async function getData(place, unit) {
-    let response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${place}&units=${unit}&APPID=10f76607761969e3dd7bf41fb74404f6`)
-    let data = await response.json()
-    return cityData = storeData(data.name, Math.round(data.main.temp), data.weather[0].icon, data.weather[0].description, Math.round(data.main.temp_max), Math.round(data.main.temp_min))
+    try {
+        let response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${place}&units=${unit}&APPID=10f76607761969e3dd7bf41fb74404f6`)
+        let data = await response.json()
+        return cityData = storeData(data.name, Math.round(data.main.temp), data.weather[0].icon, data.weather[0].description, Math.round(data.main.temp_max), Math.round(data.main.temp_min))
+    } catch (err) {
+        alert("City not found")
+    }
 }
 
 searchForm.addEventListener("submit", async e => {
