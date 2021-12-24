@@ -34,3 +34,13 @@ function renderData(info) {
     high.textContent = `H: ${info.high}°`
     low.textContent = `L: ${info.low}°`
 }
+
+fahrenheitBtn.addEventListener('click', async e => {
+    await getData(currentCity.textContent, "imperial")
+    renderData(cityData)
+})
+
+celsiusBtn.addEventListener('click', async e => {
+    await getData(currentCity.textContent, "metric")
+    renderData(cityData)
+})
