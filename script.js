@@ -8,7 +8,7 @@ const high = document.querySelector('#high')
 const low = document.querySelector('#low')
 const fahrenheitBtn = document.querySelector('#F')
 const celsiusBtn = document.querySelector('#C')
-let locationIcon = document.querySelector('#weather-icon')
+let weatherIcon = document.querySelector('#weathericon')
 const cardbackground = document.querySelector("data")
 
 function storeData(currentCity, currentTemp, icon, condition, high, low) {
@@ -21,7 +21,7 @@ async function getData(place, unit) {
         let data = await response.json()
         return cityData = storeData(data.name, Math.round(data.main.temp), data.weather[0].icon, data.weather[0].description, Math.round(data.main.temp_max), Math.round(data.main.temp_min))
     } catch (err) {
-        alert("City not found, please try again")
+        alert("Oops, you might have typed your city wrong! Please try again")
     }
 }
 
@@ -38,7 +38,7 @@ function renderData(info) {
     condition.textContent = info.condition
     high.textContent = `H: ${info.high}°`
     low.textContent = `L: ${info.low}°`
-    locationIcon.innerHTML = `<img src="icons/${info.icon}.png"></img>`
+    weatherIcon.innerHTML = `<img src="icons/${info.icon}.png"></img>`
 }
 
 fahrenheitBtn.addEventListener('click', async e => {
@@ -50,3 +50,11 @@ celsiusBtn.addEventListener('click', async e => {
     await getData(currentCity.textContent, "metric")
     renderData(cityData)
 })
+
+// default
+async function load() {
+    await getData("London", "metric")
+    renderData(cityData)
+}
+
+load();
