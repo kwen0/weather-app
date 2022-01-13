@@ -9,36 +9,37 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
         integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
 </head>
 
 <body>
-    <div id="container">
+    <div id="header">
+        <img src="./logo.png" id="logo"></img>
         <div id="searchbar">
             <form id="searchform">
-                <i class="fas fa-map-marker-alt fa-2x"></i>
+                <i class="fas fa-map-marker-alt fa-1x"></i>
                 <input type="text" id="city" placeholder="Search city">
             </form>
         </div>
-        <div id="card">
-            <div id="data">
-                <div id="currentcity"></div>
-                <div id="currenttemp"></div>
-                <div id="icon"></div>
-                <div id="condition"></div>
-                <div id="weathericon"><img src="" /></div>
-                <div class="highandlow">
-                    <div id="high"></div>
-                    <div id="low"></div>
-                </div>
-            </div>
-            <div class="unit">
-                <button id="F">°F</button>
-                <div>|</div>
-                <button id="C">°C</button>
+        <div class="unit">
+            <button id="F" class="selected">°F</button>
+            <div>|</div>
+            <button id="C">°C</button>
+        </div>
+    </div>
+    <div id="container">
+        <div id="today-card">
+            <div id="currentcity"></div>
+            <div id="currenttemp"></div>
+            <div id="icon"></div>
+            <div id="condition"></div>
+            <div class="highandlow">
+                <div id="high"></div>
+                <div id="low"></div>
             </div>
         </div>
     </div>
+    <script type='text/javascript' src='config.js'></script>
+    <script src="script.js"></script>
 </body>
 
 </html>
