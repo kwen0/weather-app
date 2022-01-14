@@ -6,20 +6,23 @@ const icon = document.querySelector('#icon')
 const condition = document.querySelector('#condition')
 const high = document.querySelector('#high')
 const low = document.querySelector('#low')
+const humidity = document.querySelector('#humidity')
+const wind = document.querySelector('#wind')
 const fahrenheitBtn = document.querySelector('#F')
 const celsiusBtn = document.querySelector('#C')
 let weatherIcon = document.querySelector('#weathericon')
 const todaycard = document.querySelector("#today-card")
 
-function storeCurrentData(currentCity, currentTemp, icon, condition, high, low) {
-    return { currentCity, currentTemp, icon, condition, high, low }
+function storeCurrentData(currentCity, currentTemp, icon, condition, high, low, humidity, wind, lat, lon) {
+    return { currentCity, currentTemp, icon, condition, high, low, humidity, wind, lat, lon }
 }
 
 async function getCurrentData(city, unit) {
     try {
         const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${unit}&APPID=10f76607761969e3dd7bf41fb74404f6`)
         const data = await response.json()
-        return currentWeatherData = storeCurrentData(data.name, Math.round(data.main.temp), data.weather[0].icon, data.weather[0].description, Math.round(data.main.temp_max), Math.round(data.main.temp_min))
+        console.log(data)
+        return currentWeatherData = storeCurrentData(data.name, Math.round(data.main.temp), data.weather[0].icon, data.weather[0].description, Math.round(data.main.temp_max), Math.round(data.main.temp_min), data.main.humidity, data.wind.speed, data.coord.lat, data.coord.lon)
     } catch (err) {
         return
     }
@@ -57,6 +60,13 @@ function renderCurrentData(data) {
     condition.textContent = data.condition
     high.textContent = `H: ${data.high}°`
     low.textContent = `L: ${data.low}°`
+    humidity.textContent = `Humidity: ${data.humidity}%`
+    const selectedUnit = document.querySelector(".selected")
+    if (selectedUnit.id === "F") {
+        wind.textContent = `Wind speed: ${data.wind} mph`
+    } else {
+        wind.textContent = `Wind speed: ${data.wind} m/s`
+    }
 }
 
 function renderBackgoundImage(data) {
@@ -98,6 +108,18 @@ async function load() {
     await getCurrentData("New York", "imperial")
     renderCurrentData(currentWeatherData)
     renderBackgoundImage(currentWeatherData)
+    await getWeatherData(currentWeatherData.lat, currentWeatherData.lon, "metric")
 }
 
 load();
+
+async function getWeatherData(lat, lon, unit) {
+    try {
+        const response = await fetch(`http://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=${unit}&exclude=minutely,alerts&APPID=10f76607761969e3dd7bf41fb74404f6`)
+        const data = await response.json()
+        console.log(data)
+    } catch (err) {
+        return
+    }
+}
+
