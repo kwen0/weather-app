@@ -45,6 +45,7 @@ async function getImage(condition) {
 searchForm.addEventListener("submit", async e => {
     e.preventDefault();
     currentWeatherData = { ...currentWeatherData, icon: "" };
+    hourlyData = {}
     const selectedUnit = document.querySelector(".selected")
     if (selectedUnit.id === "F") {
         await getCurrentData(city.value, "imperial")
