@@ -11,6 +11,10 @@ const wind = document.querySelector('#wind')
 const fahrenheitBtn = document.querySelector('#F')
 const celsiusBtn = document.querySelector('#C')
 const todaycard = document.querySelector("#today-card")
+const hourlyCard = document.querySelector("#hourly-card")
+const hourlyTemplate = document.querySelector(".hourly-template")
+const weekCard = document.querySelector("#week-card")
+const weekTemplate = document.querySelector(".week-template")
 //            icons created by iconixar - Flaticon
 
 function storeCurrentData(currentCity, currentTemp, icon, condition, high, low, humidity, wind, lat, lon) {
@@ -51,9 +55,8 @@ searchForm.addEventListener("submit", async e => {
         await getCurrentData(city.value, "metric")
         await getWeatherData(currentWeatherData.lat, currentWeatherData.lon, "metric")
     }
-    renderCurrentData(currentWeatherData)
     renderBackgoundImage(currentWeatherData)
-    renderHourlyData(hourlyData)
+    render()
     city.value = null;
 })
 
@@ -97,8 +100,7 @@ fahrenheitBtn.addEventListener('click', async e => {
     fahrenheitBtn.classList.add("selected")
     await getCurrentData(currentCity.textContent, "imperial")
     await getWeatherData(currentWeatherData.lat, currentWeatherData.lon, "imperial")
-    renderCurrentData(currentWeatherData)
-    renderHourlyData(hourlyData)
+    render()
 })
 
 celsiusBtn.addEventListener('click', async e => {
@@ -106,8 +108,7 @@ celsiusBtn.addEventListener('click', async e => {
     celsiusBtn.classList.add("selected")
     await getCurrentData(currentCity.textContent, "metric")
     await getWeatherData(currentWeatherData.lat, currentWeatherData.lon, "metric")
-    renderCurrentData(currentWeatherData)
-    renderHourlyData(hourlyData)
+    render()
 })
 
 async function getWeatherData(lat, lon, unit) {
@@ -119,9 +120,6 @@ async function getWeatherData(lat, lon, unit) {
         return
     }
 }
-
-const hourlyCard = document.querySelector("#hourly-card")
-const hourlyTemplate = document.querySelector(".hourly-template")
 
 function renderHourlyData(data) {
     clear(hourlyCard)
@@ -137,11 +135,27 @@ function renderHourlyData(data) {
     })
 }
 
+function renderWeekData(data) {
+    clear(weekCard)
+    data.forEach(info => {
+        const dayCell = document.importNode(weekTemplate.content, true)
+        const day = dayCell.querySelector('.day')
+        const icon = dayCell.querySelector('.icon')
+        const details = dayCell.querySelector('.details')
+        const temp = dayCell.querySelector('.temp')
+        day.textContent = formatDay(info.dt)
+        icon.src = `./icons/${info.weather[0].icon}.png`
+        details.textContent = info.weather[0].description
+        temp.textContent = `${Math.round(info.temp.max)}°/${Math.round(info.temp.min)}°`
+        weekCard.appendChild(dayCell)
+    })
+}
+
 function formatTime(dt) {
     let unixTime = dt + timezoneOffset
-    let localTimezoneOffset = new Date().getTimezoneOffset() * 60;
-    let offsettedDate = unixTime + localTimezoneOffset;
-    let hour = new Date(offsettedDate * 1000).getHours();
+    let localTimezoneOffset = new Date().getTimezoneOffset() * 60
+    let offsettedDate = unixTime + localTimezoneOffset
+    let hour = new Date(offsettedDate * 1000).getHours()
     if (hour > 12) {
         return `${hour - 12}pm`
     } else if (hour == 0) {
@@ -153,6 +167,27 @@ function formatTime(dt) {
     }
 }
 
+function formatDay(dt) {
+    let date = new Date(dt * 1000)
+    let day = date.getDay()
+    let num = date.getDate()
+    switch (day) {
+        case 0: return `${num} Sun`
+        case 1: return `${num} Mon`
+        case 2: return `${num} Tues`
+        case 3: return `${num} Wed`
+        case 4: return `${num} Thurs`
+        case 5: return `${num} Fri`
+        case 6: return `${num} Sat`
+    }
+}
+
+function render() {
+    renderCurrentData(currentWeatherData)
+    renderHourlyData(hourlyData)
+    renderWeekData(weekData)
+}
+
 function clear(element) {
     while (element.firstChild) {
         element.removeChild(element.firstChild)
@@ -161,11 +196,10 @@ function clear(element) {
 
 // default
 async function load() {
-    await getCurrentData("brooklyn", "imperial")
-    renderCurrentData(currentWeatherData)
-    renderBackgoundImage(currentWeatherData)
+    await getCurrentData("New York", "imperial")
     await getWeatherData(currentWeatherData.lat, currentWeatherData.lon, "imperial")
-    renderHourlyData(hourlyData)
+    renderBackgoundImage(currentWeatherData)
+    render()
 }
 
 load();

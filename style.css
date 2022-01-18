@@ -10,7 +10,7 @@ body {
 }
 
 #header {
-    background: white;
+    background: rgb(163,212,247);
     color:rgb(14, 65, 104);
     padding: 5px;
     display: flex;
@@ -37,15 +37,26 @@ body {
     align-items: center;
 }
 
-#today-card, #hourly-card {
+#today-card, #hourly-card, #week-card {
     margin-top: 20px;
     width: 50vw;
-    border-radius: 1em;
+    border-radius: 0.8em;
     padding: 0.8em;
     font-size: 35px;
     color: white;
     background-color: rgb(255,255,255, 0.1);
     background-blend-mode: overlay;
+}
+
+#hourly-card {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+#week-card {
+    margin-bottom: 20px;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
 }
 
 #cityname {
@@ -124,7 +135,7 @@ button:hover, button:focus {
 
 #hourly-card {
     display: flex;
-    overflow: scroll;
+    overflow-x: scroll;
     gap: 20px;
 }
 
@@ -134,7 +145,7 @@ button:hover, button:focus {
     align-items: center;
     width: 50px;
     font-size: 14px;
-    gap: 8px;
+    gap: 6px;
 }
 
 .hour {
@@ -149,4 +160,25 @@ button:hover, button:focus {
     display: flex;
     flex-direction: column;
     gap: 5px;
+}
+
+.day-cell {
+    display: flex;
+    font-size: 16px;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgb(14, 65, 104);
+    padding: 0.4em;
+}
+
+.day-cell:last-child{
+    border-bottom: none
+}
+
+.day { 
+    width: 5em;
+}
+
+.details {
+    width: 10em;
 }
