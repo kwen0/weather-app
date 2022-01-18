@@ -15,7 +15,6 @@ const hourlyCard = document.querySelector("#hourly-card")
 const hourlyTemplate = document.querySelector(".hourly-template")
 const weekCard = document.querySelector("#week-card")
 const weekTemplate = document.querySelector(".week-template")
-//            icons created by iconixar - Flaticon
 
 function storeCurrentData(currentCity, currentTemp, icon, condition, high, low, humidity, wind, lat, lon) {
     return { currentCity, currentTemp, icon, condition, high, low, humidity, wind, lat, lon }
@@ -46,7 +45,6 @@ async function getImage(condition) {
 searchForm.addEventListener("submit", async e => {
     e.preventDefault();
     currentWeatherData = { ...currentWeatherData, icon: "" };
-    hourlyData = {}
     const selectedUnit = document.querySelector(".selected")
     if (selectedUnit.id === "F") {
         await getCurrentData(city.value, "imperial")
@@ -168,17 +166,18 @@ function formatTime(dt) {
 }
 
 function formatDay(dt) {
-    let date = new Date(dt * 1000)
-    let day = date.getDay()
-    let num = date.getDate()
+    let unixTime = dt + timezoneOffset
+    let localTimezoneOffset = new Date().getTimezoneOffset() * 60
+    let offsettedDate = unixTime + localTimezoneOffset
+    let day = new Date(offsettedDate * 1000).getDay()
     switch (day) {
-        case 0: return `${num} Sun`
-        case 1: return `${num} Mon`
-        case 2: return `${num} Tues`
-        case 3: return `${num} Wed`
-        case 4: return `${num} Thurs`
-        case 5: return `${num} Fri`
-        case 6: return `${num} Sat`
+        case 0: return "Sunday"
+        case 1: return "Monday"
+        case 2: return "Tuesday"
+        case 3: return "Wednesday"
+        case 4: return "Thursday"
+        case 5: return "Friday"
+        case 6: return "Saturday"
     }
 }
 
