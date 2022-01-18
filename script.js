@@ -45,7 +45,6 @@ async function getImage(condition) {
 searchForm.addEventListener("submit", async e => {
     e.preventDefault();
     currentWeatherData = { ...currentWeatherData, icon: "" };
-    hourlyData = {}
     const selectedUnit = document.querySelector(".selected")
     if (selectedUnit.id === "F") {
         await getCurrentData(city.value, "imperial")
@@ -112,7 +111,7 @@ celsiusBtn.addEventListener('click', async e => {
 
 async function getWeatherData(lat, lon, unit) {
     try {
-        const response = await fetch(`http://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=${unit}&exclude=minutely,alerts&APPID=10f76607761969e3dd7bf41fb74404f6`, { mode: 'cors' })
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=${unit}&exclude=minutely,alerts&APPID=10f76607761969e3dd7bf41fb74404f6`, { mode: 'cors' })
         const data = await response.json()
         return hourlyData = data.hourly.slice(0, 24), weekData = data.daily.slice(1, 8), timezoneOffset = data.timezone_offset
     } catch (err) {
