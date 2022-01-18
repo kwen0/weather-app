@@ -10,8 +10,9 @@ const humidity = document.querySelector('#humidity')
 const wind = document.querySelector('#wind')
 const fahrenheitBtn = document.querySelector('#F')
 const celsiusBtn = document.querySelector('#C')
-let weatherIcon = document.querySelector('#weathericon')
 const todaycard = document.querySelector("#today-card")
+//            icons created by iconixar - Flaticon
+
 
 function storeCurrentData(currentCity, currentTemp, icon, condition, high, low, humidity, wind, lat, lon) {
     return { currentCity, currentTemp, icon, condition, high, low, humidity, wind, lat, lon }
@@ -21,7 +22,6 @@ async function getCurrentData(city, unit) {
     try {
         const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${unit}&APPID=10f76607761969e3dd7bf41fb74404f6`)
         const data = await response.json()
-        console.log(data)
         return currentWeatherData = storeCurrentData(data.name, Math.round(data.main.temp), data.weather[0].icon, data.weather[0].description, Math.round(data.main.temp_max), Math.round(data.main.temp_min), data.main.humidity, data.wind.speed, data.coord.lat, data.coord.lon)
     } catch (err) {
         return
@@ -63,9 +63,9 @@ function renderCurrentData(data) {
     humidity.textContent = `Humidity: ${data.humidity}%`
     const selectedUnit = document.querySelector(".selected")
     if (selectedUnit.id === "F") {
-        wind.textContent = `Wind speed: ${data.wind} mph`
+        wind.textContent = `Wind: ${data.wind}mph`
     } else {
-        wind.textContent = `Wind speed: ${data.wind} m/s`
+        wind.textContent = `Wind: ${data.wind}m/s`
     }
 }
 
@@ -103,23 +103,47 @@ celsiusBtn.addEventListener('click', async e => {
     renderCurrentData(currentWeatherData)
 })
 
-// default
-async function load() {
-    await getCurrentData("New York", "imperial")
-    renderCurrentData(currentWeatherData)
-    renderBackgoundImage(currentWeatherData)
-    await getWeatherData(currentWeatherData.lat, currentWeatherData.lon, "metric")
-}
-
-load();
-
 async function getWeatherData(lat, lon, unit) {
     try {
-        const response = await fetch(`http://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=${unit}&exclude=minutely,alerts&APPID=10f76607761969e3dd7bf41fb74404f6`)
+        const response = await fetch(`http://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=${unit}&exclude=minutely,alerts&APPID=10f76607761969e3dd7bf41fb74404f6`, { mode: 'cors' })
         const data = await response.json()
-        console.log(data)
+        return hourlyData = data.hourly.slice(0, 12), weekData = data.daily.slice(1, 8)
     } catch (err) {
         return
     }
 }
 
+const hourlyCard = document.querySelector("#hourly-card")
+const hourlyTemplate = document.querySelector(".hourly-template")
+
+function renderHourlyData(data) {
+    data.forEach(info => {
+        const hourCell = document.importNode(hourlyTemplate.content, true)
+        const hour = hourCell.querySelector('.hour')
+        const icon = hourCell.querySelector('.icon')
+        const temp = hourCell.querySelector('.temp')
+        hour.textContent = info.dt
+        icon.src = `./icons/${info.weather[0].icon}.png`
+        temp.textContent = Math.round(info.temp)
+        hourlyCard.appendChild(hourCell)
+    })
+}
+
+
+// default
+async function load() {
+    await getCurrentData("New York", "imperial")
+    console.log(currentWeatherData)
+    renderCurrentData(currentWeatherData)
+    //  renderBackgoundImage(currentWeatherData)
+    await getWeatherData(currentWeatherData.lat, currentWeatherData.lon, "imperial")
+    renderHourlyData(hourlyData)
+}
+
+// async function loadHourly() {
+//     await getWeatherData(40.7143, -74.006, "imperial")
+//     console.log(data)
+// }
+
+load();
+// loadHourly();
