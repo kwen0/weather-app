@@ -125,6 +125,7 @@ button:hover, button:focus {
 #hourly-card {
     display: flex;
     overflow: scroll;
+    gap: 20px;
 }
 
 .hour-cell {
@@ -133,8 +134,19 @@ button:hover, button:focus {
     align-items: center;
     width: 50px;
     font-size: 14px;
+    gap: 8px;
+}
+
+.hour {
+    font-size: 12px;
 }
 
 .icon {
-    width: 30px
+    width: 30px;
+}
+
+#details {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }

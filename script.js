@@ -13,7 +13,6 @@ const celsiusBtn = document.querySelector('#C')
 const todaycard = document.querySelector("#today-card")
 //            icons created by iconixar - Flaticon
 
-
 function storeCurrentData(currentCity, currentTemp, icon, condition, high, low, humidity, wind, lat, lon) {
     return { currentCity, currentTemp, icon, condition, high, low, humidity, wind, lat, lon }
 }
@@ -43,14 +42,18 @@ async function getImage(condition) {
 searchForm.addEventListener("submit", async e => {
     e.preventDefault();
     currentWeatherData = { ...currentWeatherData, icon: "" };
+    hourlyData = {}
     const selectedUnit = document.querySelector(".selected")
     if (selectedUnit.id === "F") {
         await getCurrentData(city.value, "imperial")
+        await getWeatherData(currentWeatherData.lat, currentWeatherData.lon, "imperial")
     } else {
         await getCurrentData(city.value, "metric")
+        await getWeatherData(currentWeatherData.lat, currentWeatherData.lon, "metric")
     }
     renderCurrentData(currentWeatherData)
     renderBackgoundImage(currentWeatherData)
+    renderHourlyData(hourlyData)
     city.value = null;
 })
 
@@ -93,21 +96,25 @@ fahrenheitBtn.addEventListener('click', async e => {
     celsiusBtn.classList.remove("selected")
     fahrenheitBtn.classList.add("selected")
     await getCurrentData(currentCity.textContent, "imperial")
+    await getWeatherData(currentWeatherData.lat, currentWeatherData.lon, "imperial")
     renderCurrentData(currentWeatherData)
+    renderHourlyData(hourlyData)
 })
 
 celsiusBtn.addEventListener('click', async e => {
     fahrenheitBtn.classList.remove("selected")
     celsiusBtn.classList.add("selected")
     await getCurrentData(currentCity.textContent, "metric")
+    await getWeatherData(currentWeatherData.lat, currentWeatherData.lon, "metric")
     renderCurrentData(currentWeatherData)
+    renderHourlyData(hourlyData)
 })
 
 async function getWeatherData(lat, lon, unit) {
     try {
         const response = await fetch(`http://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=${unit}&exclude=minutely,alerts&APPID=10f76607761969e3dd7bf41fb74404f6`, { mode: 'cors' })
         const data = await response.json()
-        return hourlyData = data.hourly.slice(0, 12), weekData = data.daily.slice(1, 8)
+        return hourlyData = data.hourly.slice(0, 24), weekData = data.daily.slice(1, 8), timezoneOffset = data.timezone_offset
     } catch (err) {
         return
     }
@@ -117,33 +124,48 @@ const hourlyCard = document.querySelector("#hourly-card")
 const hourlyTemplate = document.querySelector(".hourly-template")
 
 function renderHourlyData(data) {
+    clear(hourlyCard)
     data.forEach(info => {
         const hourCell = document.importNode(hourlyTemplate.content, true)
         const hour = hourCell.querySelector('.hour')
         const icon = hourCell.querySelector('.icon')
         const temp = hourCell.querySelector('.temp')
-        hour.textContent = info.dt
+        hour.textContent = formatTime(info.dt)
         icon.src = `./icons/${info.weather[0].icon}.png`
-        temp.textContent = Math.round(info.temp)
+        temp.textContent = `${Math.round(info.temp)}°`
         hourlyCard.appendChild(hourCell)
     })
 }
 
+function formatTime(dt) {
+    let unixTime = dt + timezoneOffset
+    let localTimezoneOffset = new Date().getTimezoneOffset() * 60;
+    let offsettedDate = unixTime + localTimezoneOffset;
+    let hour = new Date(offsettedDate * 1000).getHours();
+    if (hour > 12) {
+        return `${hour - 12}pm`
+    } else if (hour == 0) {
+        return "12am"
+    } else if (hour == 12) {
+        return "12pm"
+    } else {
+        return `${hour}am`;
+    }
+}
+
+function clear(element) {
+    while (element.firstChild) {
+        element.removeChild(element.firstChild)
+    }
+}
 
 // default
 async function load() {
-    await getCurrentData("New York", "imperial")
-    console.log(currentWeatherData)
+    await getCurrentData("brooklyn", "imperial")
     renderCurrentData(currentWeatherData)
-    //  renderBackgoundImage(currentWeatherData)
+    renderBackgoundImage(currentWeatherData)
     await getWeatherData(currentWeatherData.lat, currentWeatherData.lon, "imperial")
     renderHourlyData(hourlyData)
 }
 
-// async function loadHourly() {
-//     await getWeatherData(40.7143, -74.006, "imperial")
-//     console.log(data)
-// }
-
 load();
-// loadHourly();
