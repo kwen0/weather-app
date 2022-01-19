@@ -13,17 +13,19 @@ WeatherFlow is a simple web app to look up weather forecasts by city.
 
 ## Tools Used
 - Plain Javascript, HTML, and CSS
-- [Openweather API](https://openweathermap.org/api)
-- [Unsplash API](https://unsplash.com/developers)
+- [Openweather API](https://openweathermap.org/api) for weather forecast data
+- [Unsplash API](https://unsplash.com/developers) for background images
 
 ## Getting Started
 - No dependencies are required to run this app locally, simply clone the repository and open the index.html file in your browser.
+```
+$ git clone git@github.com:kwen0/weather-app.git
+```
 
 ## Future Features
-- Make it mobile friendly.
+- Improve mobile friendliness.
 - Refine the search function to a country.
 - Allow user to search location by zip code. 
 
 ## Notes
-- Building this project solidified my knowledge of async/await functions and working with JSON APIs.
-- For the purpose of deploying this app to Github Pages, the API keys have not been hidden.
+- For the purpose of deploying this app to Github Pages, the API keys used have not been hidden.
