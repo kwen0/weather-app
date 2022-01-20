@@ -23,9 +23,8 @@ $ git clone git@github.com:kwen0/weather-app.git
 ```
 
 ## Future Features
-- Improve mobile friendliness.
 - Refine the search function to a country.
 - Allow user to search location by zip code. 
 
-## Notes
+## Note
 - For the purpose of deploying this app to Github Pages, the API keys used have not been hidden.

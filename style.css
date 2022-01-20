@@ -20,7 +20,7 @@ body {
 }
 
 #logo {
-    height: 40px;
+    width: 10em;
 }
 
 #searchbar {
@@ -56,7 +56,7 @@ body {
     margin-bottom: 20px;
     padding-top: 0.3em;
     padding-bottom: 0.3em;
-    overflow: scroll;
+    overflow-x: scroll;
 }
 
 #cityname {
@@ -85,7 +85,7 @@ body {
 }
 
 input {
-    width: 200px;
+    width: 12rem;
     vertical-align: middle;
     margin: none;
     padding: 0.5em;
@@ -177,7 +177,7 @@ button:hover, button:focus {
 }
 
 .day { 
-    width: 5em;
+    width: 3em;
 }
 
 .details {
@@ -201,4 +201,32 @@ button:hover, button:focus {
 
 .github {
     gap: 5px;
+}
+
+.day-cell > .temp {
+    width: 4em;
+}
+
+@media only screen and (min-width: 200px) and (max-width: 670px) {
+    #logo {
+        height: 30px;
+        width: auto;
+    }
+    input {
+        width: 7rem;
+        height: 1em;
+    }
+    #today-card, #hourly-card, #week-card {
+        width: 65vw;
+    }
+    .details { 
+        width: 4em;
+    }
+    .day {
+        width: 5em;
+    }
+    .day-cell {
+        font-size: 12px;
+        justify-content: space-between;
+    }
 }
