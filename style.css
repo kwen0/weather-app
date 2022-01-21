@@ -213,8 +213,8 @@ button:hover, button:focus {
         width: auto;
     }
     input {
-        width: 5rem;
-        height: 1em;
+        width: 6rem;
+        height: 1.5em;
     }
     #today-card, #hourly-card, #week-card {
         width: 70vw;
@@ -227,6 +227,10 @@ button:hover, button:focus {
     }
     .day-cell {
         font-size: 12px;
+        justify-content: space-between;
+    }
+    #header {
+        padding: 0.8em;
         justify-content: space-between;
     }
 }
