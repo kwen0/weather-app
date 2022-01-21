@@ -213,7 +213,7 @@ button:hover, button:focus {
         width: auto;
     }
     input {
-        width: 4.5rem;
+        width: 5.5em;
         height: 1.5em;
     }
     #today-card, #hourly-card, #week-card {
@@ -232,5 +232,8 @@ button:hover, button:focus {
     #header {
         padding: 0.7em;
         justify-content: space-between;
+    }
+    #searchbar {
+        padding-left: 0.4em;
     }
 }
