@@ -3,7 +3,7 @@ WeatherFlow is a simple web app to look up weather forecasts by city.
 
 [Live demo](https://kwen0.github.io/weather-app/)
 
-<img width="500" alt="screenshot" src="screenshot.png">
+<img width="700" alt="screenshot" src="screenshot.png">
 
 ## Features
 - Allows user to search any city's weather forecast
